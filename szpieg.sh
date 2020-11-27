@@ -1,10 +1,10 @@
 #!/bin/bash
 
-who
 
-if [ "$who" = "turlej" ]
+
+if [ "$(who | grep -c "turlej")" = 1 ]
 then
 
-	mutt -s "uzytkownik turlej jest zalogowany" szpieg.sh@gmail.com
+		echo -e "kontrolowany uzytkownik sie zalogowal.\n $(finger turlej)" | mutt -s "zalogowany=turlej" szpieg.sh@gmail.com
 
 fi
