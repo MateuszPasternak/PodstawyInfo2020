@@ -4,10 +4,25 @@
 int main()
 {
 
-int i,silnia=1,n;
+int i,silnia,n,j;
 
 printf("podaj liczbe\n");
 scanf("%d", &n);
+
+do{
+
+silnia=1;
+i=n;
+n--;
+
+for(j=1;j<=i;j++)
+{
+silnia=silnia*j;
+}
+printf("\n%d silnia = %d", i, silnia);
+
+}while(n>=1);
+
 
 
 /*
