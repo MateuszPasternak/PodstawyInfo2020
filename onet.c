@@ -25,32 +25,38 @@ for(j=0;j<10;j++)
 for(i=0;i<10;i++)
 {
 
-if(i!=0, j!=0, i!=9, j!=9 )
+if(i!=0 || i!=9 || j!=0 || j!=9 )
 {
 
 	a=tab[i-1][j];
 	b=tab[i+1][j];
 	c=tab[i][j-1];
 	d=tab[i][j+1];
-
 }
-else
+
+if(i==0 || i==9 || j==0 || j==9)
 {
-	if(i=0)
+
+        a=tab[i-1][j];
+        b=tab[i+1][j];
+        c=tab[i][j-1];
+        d=tab[i][j+1];
+
+	if(i==0)
 	{
 	a=tab[9][j]; b=tab[1][j];
 	}
-	if(i=9)
+	if(i==9)
 	{
 	b=tab[0][j]; a=tab[8][j];
 	}
-	if(j=0)
+	if(j==0)
 	{
 	c=tab[i][9]; d=tab[i][1];
 	}
-	if(j=9)
+	if(j==9)
 	{
-	d=tab[i][1]; c=tab[i][8];
+	d=tab[i][0]; c=tab[i][8];
 	}
 }
 
