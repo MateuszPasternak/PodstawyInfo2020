@@ -1,0 +1,306 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+    int m, numberofopponents;
+    char name[20], saves[20];
+    struct character{
+    char name[20];
+    int T; int S; int W; int bs; int ws; int ld; int exp; int SP;
+    };
+    struct character gracz = {
+    .T=5, .S=4, .W=6, .bs=3, .ws=3, .ld=7, .exp=0, .SP=25
+    };
+    struct enemy{
+    char name[20];
+    int T; int S; int W; int bs; int ws; int ld;
+    };
+    void create(); void gamemenu(); void upgradecharacter(); char namegenerator(); void opponents();
+    struct enemy *enemies;
+
+
+int main()
+{
+    printf("\t\t\tMainMenu\n\n\t\t1)New Game\n\t\t2)Load Game\n\t\t3)Exit Game\n");
+    scanf("%d",&m);
+
+    switch(m)
+    {
+        case 1:
+        create();
+        break;
+        case 2:
+            printf("\n\n\n\t\t\tEnter the name of character from the save u want to open\n\n\t\t");
+            scanf("%s",&name);
+            strcpy(saves,name);
+        FILE* fp = fopen(saves,"r");
+        fscanf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",&gracz.name,&gracz.T,&gracz.S,&gracz.W,&gracz.ld,&gracz.bs,&gracz.ws,&gracz.SP,&gracz.exp);
+        fclose(fp);
+        gamemenu();
+        break;
+        case 3:
+        exit(EXIT_SUCCESS);
+        break;
+        default:
+        printf("Number chosen does not exist");
+        main();
+    }
+
+return 0;
+}
+
+
+void create()
+{
+    int b;
+
+
+        printf("\t\tEnter your character's name:\n\t\tChoose wisely,\n\t\tIt cannot be changed later.\n\n\t\t");
+        scanf("%s",&gracz.name);
+           if(gracz.name=="wisely" || gracz.name=="Wisely"){
+                printf("\t\tYour characters name cannot be \"wisely\", be more creative and enter your own character's name:\n\t\tChoose wisely,\n\t\tIt cannot be changed later.\n\n\t\t");
+                scanf("%s",gracz.name);
+            }
+            if(gracz.name=="changed" || gracz.name=="Changed" || gracz.name=="Later" || gracz.name=="later"){
+                printf("\t\tYour characters name cannot be \"Changed later\", u are not funny :|. Choose the name already and let's get started:\n\t\tChoose wisely,\n\t\tIt cannot be changed later.\n\n\t\t");
+                scanf("%s",&gracz.name);
+            }
+        printf("\n\t\tBasic Character Atributes:\n\n\t\t\tToughness(T)=5, Strength(S)=4, Wounds(W)=6, Leadership(Ld)=7, Skill Points(SP)=25\n\n");
+        printf("\t\tDistribute your points: %d SP remaining\n\n", gracz.SP);
+
+        do{
+                if(gracz.SP!=0){
+        printf("Toughness:\t");
+        scanf("%d",&b);
+        if(b<=gracz.SP){
+        gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+            }
+                }
+                if(gracz.SP!=0){
+        printf("Strength:\t"); scanf("%d", &b);
+        if(b<=gracz.SP){
+        gracz.S+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+            }
+                }
+                if(gracz.SP!=0){
+        printf("Wounds:\t"); scanf("%d", &b);
+        if(b<=gracz.SP){
+        gracz.W+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+            }
+                }
+            if(gracz.SP!=0){
+        printf("Leadership:\t"); scanf("%d", &b);
+        if(b<=gracz.SP){
+        gracz.ld+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+            }
+        }while(gracz.SP>0);
+            strcpy(saves,gracz.name);
+            FILE* fp = fopen(saves,"a+");
+            printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+            fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+        fclose(fp);
+        gamemenu();
+return;
+}
+
+void gamemenu()
+{
+        printf("\n\n\n\n\n\n\n\n\n\n\t\t\tOptions:\n\t\t1)Save Game\n\t\t2)Skirmish\n\t\t3)Edit your character\n\t\t4)Return to Main Menu\n\t\t5)Exit Game\n\n\n\t\t");
+        scanf("%d",&m);
+        char zapyt[3];
+
+        switch(m)
+        {
+        case 1:
+            strcpy(saves,gracz.name);
+                FILE* fp = fopen(saves,"w+");
+                fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+                fclose(fp);
+                printf("\n\n\t\t\tCurrent game has been saved\n\n");
+                gamemenu();
+        break;
+        case 2:
+
+        break;
+        case 3:
+            printf("\n\n\n\n\t\t\tCurrent %s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+            if(gracz.SP>0){
+            printf("\n\n\n\t\t\tYou posses %d Skill Points, do you wish to distribute them? (Yes/No)\n\t", gracz.SP);
+            scanf("%s", zapyt);
+                if(zapyt=="Yes" || zapyt=="yes")
+                {
+                    upgradecharacter();
+                    gamemenu();
+                }
+                else if(zapyt=="No" || zapyt=="no")
+                    gamemenu();
+                else
+                {
+                    printf("You have not responded properly");
+                    gamemenu();
+                }
+            }
+            gamemenu();
+        break;
+        case 4:
+            main();
+        break;
+        case 5:
+            exit(EXIT_SUCCESS);
+        break;
+        default:
+            printf("\n\n\t\t\t\tNumber chosen does not exist\n\n");
+            gamemenu();
+        }
+
+  return;
+}
+
+void upgradecharacter()
+{
+    int b;
+         do{
+                if(gracz.SP!=0){
+        printf("Toughness:\t");
+        scanf("%d",&b);
+        if(b<=gracz.SP){
+        gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+            }
+                }
+                if(gracz.SP!=0){
+        printf("Strength:\t"); scanf("%d", &b);
+        if(b<=gracz.SP){
+        gracz.S+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+            }
+                }
+                if(gracz.SP!=0){
+        printf("Wounds:\t"); scanf("%d", &b);
+        if(b<=gracz.SP){
+        gracz.W+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+            }
+                }
+            if(gracz.SP!=0){
+        printf("Leadership:\t"); scanf("%d", &b);
+        if(b<=gracz.SP){
+        gracz.ld+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+        else{
+            printf("\t\t\t\tYou possess only %d Skill Points\n\t\t\t\tYou can't use more points than you possess\n\n",gracz.SP);
+            printf("Toughness:\t");
+            scanf("%d",&b);
+            gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        }
+            }
+        }while(gracz.SP>0);
+            FILE* fp = fopen("saves.txt","a+");
+            printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+            fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+            fclose(fp);
+        gamemenu();
+return;
+}
+
+void opponents()
+{
+    int i, c;
+    if(gracz.exp<15)
+    {
+    c=gracz.exp+3;
+    numberofopponents=1+rand()%(c);
+    enemies = malloc(sizeof(struct enemy) * numberofopponents);
+        for(i=0;i<=numberofopponents;i++)
+        {
+            namegenerator();
+            struct enemy enemies[i] =
+            {
+            strcpy(enemies[i].name,name),
+            [i].T=gracz.T-2, [i].S=gracz.S-2, [i].W=gracz.W/2, [i].bs=3, [i].ws=3, [i].ld=7,
+            };
+            //strcpy(saves,gracz.name);
+            //FILE* fp = fopen(saves,"a+");
+            printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+            //fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+        //fclose(fp);
+
+        }
+    }
+    free(enemies);
+    return;
+} //Do poprawki
+
+char namegenerator()
+{
+    int j, b;
+    for(j=0;j<10;j++)
+    {
+        b=1+rand()%2;
+        if(b=1){
+        name[j]=65+rand()%25;}
+        if(b=2){
+        name[j]=97+rand()%25;}
+    }
+return name[20];
+}
+
+/*struct character nch()
+{
+    int b;
+
+        printf("\t\tEnter your character's name:\n\t\tChoose wisely,\n\t\tIt cannot be changed later.\n\n\t\t");
+        scanf("%s",gracz.name);
+        printf("\n\t\tBasic Character Atributes:\n\n\t\t\tToughness(T)=5, Strength(S)=4, Wounds(W)=6, Leadership(Ld)=7, Skill Points(SP)=25\n\n");
+        printf("\tDistribute your points: %d SP remaining\n\n Toughness:\t", gracz.SP);
+        scanf("%d",&b);
+        if(b<gracz.SP)
+        gracz.T+=b; gracz.SP-=b; printf("\n\t%d SP remaining\n",gracz.SP);
+        printf("Strength:\t"); scanf("%d", &b);
+        if(b<gracz.SP)
+
+
+    return gracz;
+}*/
+
