@@ -3,7 +3,7 @@
 #include <time.h>
 #include <string.h>
 
-    int m, numberofopponents, i;
+    int m, numberofopponents, i, zarodek;
     char name[20], name2[10], saves[20], enemynames[6]="enemy", enemysaves[20];
     struct character{
     char name[20];
@@ -19,9 +19,10 @@
     void create(); void gamemenu(); void upgradecharacter(); void namegenerator(); void opponents(); void skirmish();
     struct enemy *enemies;
 
-
 int main()
 {
+    zarodek=time(NULL);
+    srand(zarodek);
     printf("\t\t\tMainMenu\n\n\t\t1)New Game\n\t\t2)Load Game\n\t\t3)Exit Game\n");
     scanf("%d",&m);
 
@@ -34,9 +35,21 @@ int main()
             printf("\n\n\n\t\t\tEnter the name of character from the save u want to open\n\n\t\t");
             scanf("%s",&name);
             strcpy(saves,name);
-        FILE* fp = fopen(saves,"r");
+        FILE* fp = fopen(saves,"r+");
         fscanf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",&gracz.name,&gracz.T,&gracz.S,&gracz.W,&gracz.ld,&gracz.bs,&gracz.ws,&gracz.SP,&gracz.exp);
         fclose(fp);
+        printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
+            strcpy(enemysaves,gracz.name);
+            strncat(enemysaves,enemynames,6);
+            FILE* fpe = fopen(enemysaves,"r+");
+            fscanf(fpe,"\n\tNumberofopponents: %d\n\n", &numberofopponents);
+            enemies = malloc(numberofopponents * sizeof(struct enemy));
+                for(i=0;i<numberofopponents;i++)
+            {
+            fscanf(fpe, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",&enemies[i].name,&enemies[i].T,&enemies[i].S,&enemies[i].W,&enemies[i].ld,&enemies[i].bs,&enemies[i].ws);
+            printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+            fclose(fpe);
+            }
         gamemenu();
         break;
         case 3:
@@ -142,6 +155,18 @@ void gamemenu()
                 FILE* fp = fopen(saves,"w+");
                 fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
                 fclose(fp);
+            for(i=0;i<numberofopponents;i++)
+            {
+            FILE* fpe = fopen(enemysaves,"w+");
+            fprintf(fpe,"\n\tNumberofopponents: %d\n\n", numberofopponents);
+            //printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+            fprintf(fpe, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+            fclose(fpe);
+            }
+                for(i=0;i<numberofopponents;i++)
+        {
+            free(enemies);
+        }
                 printf("\n\n\t\t\tCurrent game has been saved\n\n");
                 gamemenu();
         break;
@@ -173,6 +198,10 @@ void gamemenu()
             main();
         break;
         case 5:
+                    for(i=0;i<numberofopponents;i++)
+        {
+            free(enemies);
+        }
             exit(EXIT_SUCCESS);
         break;
         default:
@@ -271,15 +300,13 @@ void opponents()
             enemies[i].W=gracz.W-(1+rand()%3); enemies[i].bs=gracz.bs; enemies[i].ws=gracz.ws; enemies[i].ld=gracz.ld-4;
             strcpy(enemysaves,gracz.name);
             strncat(enemysaves,enemynames,6);
-            FILE* fp = fopen(enemysaves,"a+");
+            FILE* fpe = fopen(enemysaves,"a+");
             printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
-            fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
-            fclose(fp);
+            fprintf(fpe,"\n\tNumberofopponents: %d\n\n", numberofopponents);
+            fprintf(fpe, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+            fclose(fpe);
         }
-        for(i=0;i<numberofopponents;i++)
-        {
-            free(enemies);
-        }
+
 return;
 }
 
@@ -355,3 +382,4 @@ void skirmish()
     free(enemies);
     return;
 } //Do poprawki*/
+
