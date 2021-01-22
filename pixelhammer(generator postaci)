@@ -17,7 +17,7 @@
     int T; int S; int W; int bs; int ws; int ld;
     };
     void create(); void gamemenu(); void upgradecharacter(); char namegenerator(); void opponents(); void skirmish();
-    struct enemy **enemies;
+    struct enemy *enemies;
 
 
 int main()
@@ -121,7 +121,7 @@ void create()
             }
         }while(gracz.SP>0);
             strcpy(saves,gracz.name);
-            FILE* fp = fopen(saves,"a+");
+            FILE* fp = fopen(saves,"w+");
             printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
             fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",gracz.name,gracz.T,gracz.S,gracz.W,gracz.ld,gracz.bs,gracz.ws,gracz.SP,gracz.exp);
         fclose(fp);
@@ -265,19 +265,19 @@ void opponents()
     }
         for(i=0;i<numberofopponents;i++)
         {
-            enemies[i] = malloc(numberofopponents * sizeof(struct enemy));
-            strcpy(enemies[i]->name,name); enemies[i]->T=gracz.T-2; enemies[i]->S=gracz.S-2;
-            enemies[i]->W=gracz.W-2; enemies[i]->bs=gracz.bs; enemies[i]->ws=gracz.ws; enemies[i]->ld=gracz.ld-2;
+            enemies = malloc(numberofopponents * sizeof(struct enemy));
+            strcpy(enemies[i].name,name); enemies[i].T=gracz.T-2; enemies[i].S=gracz.S-2;
+            enemies[i].W=gracz.W-2; enemies[i].bs=gracz.bs; enemies[i].ws=gracz.ws; enemies[i].ld=gracz.ld-2;
             strcpy(enemysaves,gracz.name);
             strncat(enemysaves,enemynames,6);
             FILE* fp = fopen(enemysaves,"a+");
-            printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",enemies[i]->name,enemies[i]->T,enemies[i]->S,enemies[i]->W,enemies[i]->ld,enemies[i]->bs,enemies[i]->ws);
-            fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n\t\t\tSkill Points: %d,\tEXP: %d",enemies[i]->name,enemies[i]->T,enemies[i]->S,enemies[i]->W,enemies[i]->ld,enemies[i]->bs,enemies[i]->ws);
+            printf("\n\n\n\n\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
+            fprintf(fp, "\t\t\t%s statistics:\n\t Toughness: %d,\tStrength: %d,\tWounds: %d,\tLeadership: %d,\n\t\t\tBalistic Skills: %d,\tWeapon Skills: %d,\n",enemies[i].name,enemies[i].T,enemies[i].S,enemies[i].W,enemies[i].ld,enemies[i].bs,enemies[i].ws);
             fclose(fp);
         }
         for(i=0;i<numberofopponents;i++)
         {
-            free(enemies[i]);
+            free(enemies);
         }
 return;
 }
