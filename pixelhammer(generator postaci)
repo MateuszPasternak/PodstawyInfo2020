@@ -4,7 +4,7 @@
 #include <string.h>
 
     int m, numberofopponents, i;
-    char name[20], saves[20], enemynames[6]="enemy", enemysaves[20];
+    char name[20], name2[10], saves[20], enemynames[6]="enemy", enemysaves[20];
     struct character{
     char name[20];
     int T; int S; int W; int bs; int ws; int ld; int exp; int SP;
@@ -16,7 +16,7 @@
     char name[20];
     int T; int S; int W; int bs; int ws; int ld;
     };
-    void create(); void gamemenu(); void upgradecharacter(); char namegenerator(); void opponents(); void skirmish();
+    void create(); void gamemenu(); void upgradecharacter(); void namegenerator(); void opponents(); void skirmish();
     struct enemy *enemies;
 
 
@@ -266,8 +266,9 @@ void opponents()
         for(i=0;i<numberofopponents;i++)
         {
             enemies = malloc(numberofopponents * sizeof(struct enemy));
-            strcpy(enemies[i].name,name); enemies[i].T=gracz.T-2; enemies[i].S=gracz.S-2;
-            enemies[i].W=gracz.W-2; enemies[i].bs=gracz.bs; enemies[i].ws=gracz.ws; enemies[i].ld=gracz.ld-2;
+            namegenerator();
+            strcpy(enemies[i].name,name2); enemies[i].T=gracz.T-(1+rand()%3); enemies[i].S=gracz.S-(1+rand()%3);
+            enemies[i].W=gracz.W-(1+rand()%3); enemies[i].bs=gracz.bs; enemies[i].ws=gracz.ws; enemies[i].ld=gracz.ld-4;
             strcpy(enemysaves,gracz.name);
             strncat(enemysaves,enemynames,6);
             FILE* fp = fopen(enemysaves,"a+");
@@ -282,18 +283,21 @@ void opponents()
 return;
 }
 
-char namegenerator()
+void namegenerator()
 {
     int j, b;
-    for(j=0;j<10;j++)
-    {
         b=1+rand()%2;
         if(b=1){
-        name[j]=65+rand()%25;}
+        for(j=0;j<10;j++)
+        {
+        name2[j]=65+rand()%25;}
+        }
         if(b=2){
-        name[j]=97+rand()%25;}
-    }
-return name[20];
+        for(j=0;j<10;j++)
+        {
+        name2[j]=97+rand()%25;}
+        }
+return ;
 }
 
 void skirmish()
@@ -351,4 +355,3 @@ void skirmish()
     free(enemies);
     return;
 } //Do poprawki*/
-
