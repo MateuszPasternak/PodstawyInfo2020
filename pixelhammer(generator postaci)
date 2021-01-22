@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>
 
     int m, numberofopponents, i, zarodek, damage, edamage, HPB;
     char name[20], name2[10], saves[20], enemynames[6]="enemy", enemysaves[30];
@@ -18,18 +19,24 @@
     };
     struct enemy *enemies;
     void create(); void gamemenu(); void upgradecharacter(); void namegenerator(); void opponents(); void skirmish(); int endmg(); int dmg();
-    void loadenemies();
+    void loadenemies(); void studiobanner(); void gamebanner(); void tutorial();
 
 int main()
 {
+    sleep(2);
+    studiobanner();
+    sleep(2);
+    gamebanner();
+    sleep(3);
     zarodek=time(NULL);
     srand(zarodek);
-    printf("\t\t\tMainMenu\n\n\t\t1)New Game\n\t\t2)Load Game\n\t\t3)Exit Game\n");
+    printf("\n\n\n\n\n\t\t\tMainMenu\n\n\t\t1)New Game\n\t\t2)Load Game\n\t\t3)Exit Game\n\n\n\n\n\n\n");
     scanf("%d",&m);
 
     switch(m)
     {
         case 1:
+        tutorial();
         create();
         break;
         case 2:
@@ -396,7 +403,8 @@ void skirmish()
         if(enemies[i].W==0)
         {
             gracz.exp+=3;
-            printf("\n\n\t\t\tCongratulations! You have defeated %s. You gain 3 EXP\n\t\t\t\t\t\tYour EXP: %d", enemies[i].name, gracz.exp);
+            gracz.SP+=1;
+            printf("\n\n\t\t\tCongratulations! You have defeated %s. You gain 3 EXP and 1 SP\n\t\t\t\t\t\tYour EXP: %d,    Your SP: %d", enemies[i].name, gracz.exp, gracz.SP);
         }
         if(gracz.W==0)
         {
@@ -503,6 +511,67 @@ void loadenemies()
 return;
 }
 
+void studiobanner()
+{
+    printf("\n\n\t\t\t#################################\n");sleep(1);
+    printf("\t\t\t#################################\n");sleep(1);
+    printf("\t\t\t########### M A S H U ###########\n");sleep(1);
+    printf("\t\t\t#################################\n");sleep(1);
+    printf("\t\t\t######### S T U D I O S #########\n");sleep(1);
+    printf("\t\t\t#################################\n");sleep(1);
+    printf("\t\t\t#################################\n\n\n");sleep(1);
+return;
+}
+
+void gamebanner()
+{
+    printf("\t\t\t     P  ");sleep(1);
+    printf("R  ");sleep(1);
+    printf("E  ");sleep(1);
+    printf("S  ");sleep(1);
+    printf("E  ");sleep(1);
+    printf("N  ");sleep(1);
+    printf("T  ");sleep(1);
+    printf("S  ");sleep(1);
+    printf("\n\n\n\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t###### P I X E L H A M M E R######\n");sleep(1);
+    printf("\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t############## 4 0 K #############\n");sleep(1);
+    printf("\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t##################################\n");sleep(1);
+    printf("\t\t\t##################################\n\n\n\n");sleep(1);
+}
+
+void tutorial()
+{
+    printf("\n\n\n\n\nStatistics:\n");
+    printf("W - wounds - is the character's HP\n");
+    printf("T - toughness - is the character's durability\n");
+    printf("S - strength - is the character's ability to deal damage to opponents\n");
+    printf("ld - leadership - is the character's ability to withstand ones fear while facing terrifying opponents\n");
+    printf("bs & ws - balistic and weapon skills - is the character's skill in using weapons\n");
+    printf("SP & exp - Skill Points and experience points - points that allow character to upgrade ones statistics\n\n\n\n");
+    printf("Fight system is pretty regular, u have 3 options - to attack, to heal (but u can't exceed Wounds your character had), and to flee (which is not recommended)\n");
+    printf("You die - your character lose exp. You win, your character gain exp. Pretty straightforward.\n");
+    sleep(2);
+    printf("\n\n\n\n\n\n\n");
+    printf("\t\t\tA bit of lore:\n");
+    printf("You are part of the Emperor's elite supersoldiers formation known as Space Marines\n");
+    printf("Your duty is to purge the unclean and wipe out Emperor's enemies\n");
+    printf("Those enemies are fearsome heretics, followers of four gods of Chaos:\n\n");sleep(1);
+    printf("\tTzeench - god of abomination and change\n\n");sleep(1);
+    printf("\tKhorne - god of bloodshed and skulls\n\n");sleep(1);
+    printf("\tNurgle - god of impurity and decomposition\n\n");sleep(1);
+    printf("\tSlaneesh - god of corruption\n\n");sleep(1);
+    printf("\t\t\t\tNow Marine,\n");sleep(1);
+    printf("\t\t\t\tGo and free this world from this heretic scums in the name of the EMPEROR!!!\n");
+    printf("\t\t\t\t\t\t\t\t\tMay the Codex Astartes guide you\n");
+    sleep(2);
+return;
+}
 /*struct character nch()
 {
     int b;
